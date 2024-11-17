@@ -4,9 +4,16 @@ export interface Tournament {
   };
   turnierbezeichnung: string;
   datumAb: string;
+  datumBis: string;
   ort: string;
   wettkampfstaette: string;
   ausrichtenderVerein: string;
+  land?: {
+    bezeichnung: string;
+    code: string;
+  };
+  veranstalter?: string;
+  meldeschluss?: string;
 }
 
 export interface TournamentDetail extends Tournament {

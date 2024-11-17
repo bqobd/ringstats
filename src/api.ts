@@ -58,6 +58,7 @@ export const fetchTournaments = async () => {
     const data = await handleResponse(response);
     return Array.isArray(data) ? data : [data];
   } catch (error) {
+    console.error('Error fetching tournaments:', error);
     if (error instanceof Error) {
       if (error.name === 'AbortError') {
         throw new Error('Anslutningen tog för lång tid. Kontrollera din internetanslutning.');
@@ -68,11 +69,33 @@ export const fetchTournaments = async () => {
   }
 };
 
+export const fetchUpcomingTournaments = async () => {
+  try {
+    const response = await fetchWithTimeout(
+      `${BASE_URL}/turniere/all/2024?zeitbereich=Turnierkalender`
+    );
+    const data = await handleResponse(response);
+    // Filter tournaments from Sweden only
+    const tournaments = Array.isArray(data) ? data : [data];
+    return tournaments.filter(tournament => tournament.land?.code === 'SE');
+  } catch (error) {
+    console.error('Error fetching upcoming tournaments:', error);
+    if (error instanceof Error) {
+      if (error.name === 'AbortError') {
+        throw new Error('Anslutningen tog för lång tid. Kontrollera din internetanslutning.');
+      }
+      throw error;
+    }
+    throw new Error('Ett oväntat fel uppstod vid hämtning av kommande turneringar.');
+  }
+};
+
 export const fetchTournamentDetails = async (id: number) => {
   try {
     const response = await fetchWithTimeout(`${BASE_URL}/turniere/${id}`);
     return handleResponse(response);
   } catch (error) {
+    console.error('Error fetching tournament details:', error);
     if (error instanceof Error) {
       if (error.name === 'AbortError') {
         throw new Error('Anslutningen tog för lång tid. Kontrollera din internetanslutning.');
@@ -88,6 +111,7 @@ export const fetchClubs = async (id: number) => {
     const response = await fetchWithTimeout(`${BASE_URL}/wettkaempfe/${id}/vereine`);
     return handleResponse(response);
   } catch (error) {
+    console.error('Error fetching clubs:', error);
     if (error instanceof Error) {
       if (error.name === 'AbortError') {
         throw new Error('Anslutningen tog för lång tid. Kontrollera din internetanslutning.');
@@ -106,6 +130,7 @@ export const fetchClubMatches = async (tournamentId: number, clubId: number) => 
     const data = await handleResponse(response);
     return data.abgeschlosseneKaempfe || [];
   } catch (error) {
+    console.error('Error fetching club matches:', error);
     if (error instanceof Error) {
       if (error.name === 'AbortError') {
         throw new Error('Anslutningen tog för lång tid. Kontrollera din internetanslutning.');
