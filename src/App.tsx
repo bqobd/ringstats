@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Trophy, ArrowLeft } from 'lucide-react';
 import { fetchTournaments, fetchTournamentDetails, fetchClubs, fetchClubMatches } from './api';
 import type { Tournament, TournamentDetail, Club, Match } from './types';
+import Header from './components/Header';
 import TournamentCard from './components/TournamentCard';
 import ClubList from './components/ClubList';
 import MatchList from './components/MatchList';
@@ -95,11 +96,12 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <Header />
+      <div className="max-w-7xl mx-auto px-4 py-8 mt-16">
         {(selectedTournament || selectedClub) && (
           <button
             onClick={handleBack}
-            className="mb-6 flex items-center text-gray-600 hover:text-gray-900"
+            className="mb-6 flex items-center text-[--sbk-green] hover:text-[--sbk-dark-green]"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             Tillbaka
@@ -109,7 +111,7 @@ function App() {
         {!selectedTournament && (
           <>
             <div className="flex items-center space-x-2 mb-8">
-              <Trophy className="w-8 h-8 text-blue-600" />
+              <Trophy className="w-8 h-8 text-[--sbk-green]" />
               <h1 className="text-3xl font-bold text-gray-900">Brottningstävlingar 2024</h1>
             </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -139,9 +141,9 @@ function App() {
         )}
 
         {loading && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mx-auto"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-[--sbk-green] border-t-transparent mx-auto"></div>
               <p className="mt-4 text-gray-600">Laddar...</p>
             </div>
           </div>
